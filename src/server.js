@@ -1,47 +1,16 @@
 const express = require('express');
 
-const pseudoDatabase = require('./pseudoDatabase');
+const products = require('./routes/products');
 
 const app = express();
-
-const PORT = 3000;
-
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }))
 
-app.get('/products', (req, res, _next) => {
-  res.send(pseudoDatabase.getProducts());
-});
+const PORT = 3000;
 
-app.get('/products/:id', (req, res, _next) => {
-  res.send(pseudoDatabase.getProduct(req.params.id));
-});
-
-app.post('/products', (req, res, _next) => {
-  const product = pseudoDatabase.saveProduct({
-    name: req.body.name,
-    price: req.body.price
-  });
-
-  res.send(product);
-});
-
-app.put('/products/:id', (req, res, _next) => {
-  const product = pseudoDatabase.saveProduct({
-    id: req.params.id,
-    name: req.params.name,
-    price: req.params.price
-  });
-
-  res.send(product);
-});
-
-app.delete('/products/:id', (req, res, _next) => {
-  const product = pseudoDatabase.deleteProduct(req.params.id);
-  res.send(product);
-});
+app.use('/products', products);
 
 app.listen(PORT, () => {
   console.log(`running on port: ${PORT}`);
