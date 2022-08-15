@@ -20,8 +20,15 @@ function getProducts() {
   return Object.values(products);
 };
 
+function deleteProduct(id) {
+  const product = products[id];
+  delete products[id];
+  return product;
+}
+
 module.exports = {
   saveProduct,
   getProduct,
-  getProducts
+  getProducts,
+  deleteProduct
 };

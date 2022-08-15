@@ -34,6 +34,8 @@ app.put('/products/:id', (req, res, _next) => {
     name: req.params.name,
     price: req.params.price
   });
+
+  res.send(product);
 });
 
 app.listen(PORT, () => {
