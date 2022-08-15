@@ -1,11 +1,31 @@
 const express = require('express');
 
+const pseudoDatabase = require('./pseudoDatabase');
+
 const app = express();
 
 const PORT = 3000;
 
-app.get('/produtos', (req, res, next) => {
-  res.send({ nome: 'MacBook PRO M1', preco: 2000.00 });
+app.use(express.json());
+app.use(express.urlencoded({
+  extended: true
+}))
+
+app.get('/products', (req, res, _next) => {
+  res.send(pseudoDatabase.getProducts());
+});
+
+app.get('/products/:id', (req, res, _next) => {
+  res.send(pseudoDatabase.getProduct(req.params.id));
+});
+
+app.post('/products', (req, res, _next) => {
+  const product = pseudoDatabase.saveProduct({
+    name: req.body.name,
+    price: req.body.price
+  });
+
+  res.send(product);
 });
 
 app.listen(PORT, () => {
