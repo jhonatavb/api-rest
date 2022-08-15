@@ -1,39 +1,68 @@
 const express = require('express');
+const { StatusCodes } = require('http-status-codes');
 
-const pseudoDatabase = require('../db/pseudoDatabase');
+const { 
+  saveProduct,
+  getProducts,
+  getProduct,
+  deleteProduct 
+} = require('../db/pseudoDatabase');
 
 const router = express.Router();
 
 router.get('/', (req, res, _next) => {
-  res.send(pseudoDatabase.getProducts());
+  try {
+    const products = getProducts() 
+    return res.status(StatusCodes.OK).send(products);
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
+  }
 });
 
 router.get('/:id', (req, res, _next) => {
-  res.send(pseudoDatabase.getProduct(req.params.id));
+  try {
+    const productId = getProduct(req.params.id);
+    if(!productId) return res.send(StatusCodes.NOT_FOUND).end();
+    return res.status(StatusCodes.OK).send(productId);
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
+  }
 });
 
 router.post('/', (req, res, _next) => {
-  const product = pseudoDatabase.saveProduct({
-    name: req.body.name,
-    price: req.body.price
-  });
+  try {
+    const product = saveProduct({
+      name: req.body.name,
+      price: req.body.price
+    });
 
-  res.send(product);
+    return res.status(StatusCodes.CREATED).send(product);
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
+  }
 });
 
 router.put('/:id', (req, res, _next) => {
-  const product = pseudoDatabase.saveProduct({
-    id: req.params.id,
-    name: req.body.name,
-    price: req.body.price
-  });
+  try {
+    const product = saveProduct({
+      name: req.body.name,
+      price: req.body.price,
+      id: req.params.id
+    });
 
-  res.send(product);
+    return res.status(StatusCodes.OK).send(product);
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
+  }
 });
 
 router.delete('/:id', (req, res, _next) => {
-  const product = pseudoDatabase.deleteProduct(req.params.id);
-  res.send(product);
+  try {
+    const product = deleteProduct(req.params.id);
+    return res.status(StatusCodes.OK).send(product);
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
+  }
 });
 
 module.exports = router;
