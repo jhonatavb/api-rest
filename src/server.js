@@ -38,6 +38,11 @@ app.put('/products/:id', (req, res, _next) => {
   res.send(product);
 });
 
+app.delete('/products/:id', (req, res, _next) => {
+  const product = pseudoDatabase.deleteProduct(req.params.id);
+  res.send(product);
+});
+
 app.listen(PORT, () => {
   console.log(`running on port: ${PORT}`);
 });
