@@ -28,6 +28,14 @@ app.post('/products', (req, res, _next) => {
   res.send(product);
 });
 
+app.put('/products/:id', (req, res, _next) => {
+  const product = pseudoDatabase.saveProduct({
+    id: req.params.id,
+    name: req.params.name,
+    price: req.params.price
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`running on port: ${PORT}`);
 });
