@@ -1,4 +1,3 @@
-const express = require('express');
 const { StatusCodes } = require('http-status-codes');
 
 const { 
@@ -8,18 +7,16 @@ const {
   deleteProduct 
 } = require('../db/pseudoDatabase');
 
-const router = express.Router();
-
-router.get('/', (req, res, _next) => {
+const getAllProducts = (req, res, _next) => {
   try {
-    const products = getProducts() 
+    const products = getProducts();
     return res.status(StatusCodes.OK).send(products);
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
   }
-});
+};
 
-router.get('/:id', (req, res, _next) => {
+const getProductById = (req, res, _next) => {
   try {
     const productId = getProduct(req.params.id);
     if(!productId) return res.send(StatusCodes.NOT_FOUND).end();
@@ -27,9 +24,9 @@ router.get('/:id', (req, res, _next) => {
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
   }
-});
+};
 
-router.post('/', (req, res, _next) => {
+const createProduct = (req, res, _next) => {
   try {
     const product = saveProduct({
       name: req.body.name,
@@ -40,9 +37,9 @@ router.post('/', (req, res, _next) => {
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
   }
-});
+};
 
-router.put('/:id', (req, res, _next) => {
+const editProduct = (req, res, _next) => {
   try {
     const product = saveProduct({
       name: req.body.name,
@@ -54,15 +51,21 @@ router.put('/:id', (req, res, _next) => {
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
   }
-});
+};
 
-router.delete('/:id', (req, res, _next) => {
+const delProduct = (req, res, _next) => {
   try {
     const product = deleteProduct(req.params.id);
     return res.status(StatusCodes.OK).send(product);
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).end();
   }
-});
+};
 
-module.exports = router;
+module.exports = {
+  getAllProducts,
+  getProductById,
+  createProduct,
+  editProduct,
+  delProduct
+};
