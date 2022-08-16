@@ -23,14 +23,9 @@ You will also need an API platform such as postman or insomnia.
 ## Usage
 As stated above you can use any API platform, here I will use postman as an example.
 
-You can modify the port inside the file:
+An important piece of information is that you need to create a `.env` file and put a username, password and port as follows:
 
-`src/server.js`
-
-accessing the `PORT` constant.
-
-Another important information is that you need to create a `.env` file and put a username and password, as follows:
-
+`PORT=PORT_NUMBER`
 `DB_USERNAME=YOUR_USERNAME`
 `DB_PASSWORD=YOUR_PASSWORD`
 
@@ -44,7 +39,7 @@ After that your API should be running.
 
 Inside postman, enter the URL:
 
-`localhost:3000/products`
+`localhost:PORT_NUMBER/products`
 
 You can either GET `/products` or get products by ID with `/products/ID`. For other methods like POST, PUT and DELETE, you should go to the `Headers` tab and add the `username` and `password` keys, in the values you should put the same ones you assigned in your `.env` file, for example example:
 
