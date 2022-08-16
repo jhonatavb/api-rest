@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 
 const productsRoutes = require('./routes/productsRoutes');
 
@@ -8,7 +9,7 @@ app.use(express.urlencoded({
   extended: true
 }));
 
-const PORT = 3000;
+PORT = process.env.API_PORT;
 
 app.use('/products', productsRoutes);
 
